@@ -1,0 +1,39 @@
+package text.to.csv;
+
+import java.io.*;
+import java.util.*;
+
+public class TextToCsv {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        FileReader fr = new FileReader("text.txt");
+        BufferedReader br = new BufferedReader(fr);
+        FileWriter fw = new FileWriter ("res_text.csv");
+        BufferedWriter bw = new BufferedWriter(fw);
+        
+        String lines ="";
+        String unparsedfile = "";
+        String writestring ="";
+        String myarray[] = null;
+        int i=0;
+        
+        while((lines = br.readLine())!= null)
+                {
+                    unparsedfile+= lines;
+                    
+                }
+        br.close();
+        myarray = unparsedfile.split(",");
+        for( String item: myarray)
+        {
+            writestring += item + ",";
+            
+        }
+        writestring = writestring.substring(1, writestring.length()-1);
+        bw.write(writestring);
+        bw.close();
+    }
+}
