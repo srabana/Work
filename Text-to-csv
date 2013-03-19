@@ -9,30 +9,30 @@ public class TextToCsv {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        FileReader fr = new FileReader("text.txt");
+        FileReader fr = new FileReader("text.txt");                     // reading the text from a file called text
         BufferedReader br = new BufferedReader(fr);
-        FileWriter fw = new FileWriter ("res_text.csv");
+        FileWriter fw = new FileWriter ("res_text.csv");        // for writing back to a csv file named res_text
         BufferedWriter bw = new BufferedWriter(fw);
         
-        String lines ="";
-        String unparsedfile = "";
+        String lines ="";                                       // initialising the strings 'lines', 'unparsed' and          
+        String unparsedfile = "";                                  'writestring'
         String writestring ="";
-        String myarray[] = null;
+        String myarray[] = null;                                // array to store the comma seperated values.
         int i=0;
         
-        while((lines = br.readLine())!= null)
+        while((lines = br.readLine())!= null)                  // read till the end of the line
                 {
-                    unparsedfile+= lines;
+                    unparsedfile+= lines;                      // keeping track of the read lines
                     
                 }
         br.close();
-        myarray = unparsedfile.split(",");
+        myarray = unparsedfile.split(",");                     // the comma seperated values go in the array as elements
         for( String item: myarray)
         {
-            writestring += item + ",";
+            writestring += item + ",";                         // using array to write in cvs file
             
         }
-        writestring = writestring.substring(1, writestring.length()-1);
+        writestring = writestring.substring(1, writestring.length()-1);  // starting from 2nd position to get rid of '{'
         bw.write(writestring);
         bw.close();
     }
