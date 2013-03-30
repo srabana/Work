@@ -1,0 +1,115 @@
+package csvfile;
+
+import java.io.*;
+import java.util.*;
+/**
+ *
+ * @author india
+ */
+public class Csvfile {
+    
+   String column[]=null;
+
+    public void splitcolumn() throws FileNotFoundException, IOException
+    {
+        int f=0, pos=0;
+        String line="", unparsedfile="", writestring="";
+        String myarray[]=null;
+        FileReader fr = new FileReader("text.txt");
+        BufferedReader br = new BufferedReader(fr);
+        FileWriter fw = new FileWriter ("res_text.csv");
+        BufferedWriter bw = new BufferedWriter(fw);
+           
+    
+        while( f<4)                                                 // splitting-up the file when "," appears 
+            {
+            while( (line = br.readLine()) != null)
+                {
+                   unparsedfile+= line;
+                    
+                }
+            myarray = unparsedfile.split(",");
+            column = myarray;
+            
+            f++;
+            }
+        for(int i=0; i<myarray.length; i++)//start reading the contents and between end of contents
+            {
+                
+            line=myarray[i];
+            if(!line.equalsIgnoreCase("{"))   //ignore the begin: delimiter and start reading contents
+                {
+                   pos = line.indexOf(":");
+                   column[i] = line.substring(0,pos+1 );                // column contains all the column names
+                   
+                }
+                   
+            }
+    }
+    private void splitdata() throws FileNotFoundException, IOException 
+    {
+      int f=0, pos=0,len=0;
+        String line="", unparsedfile="", writestring = "", writestring1="";
+        String myarray[]=null, data[]=null;
+        FileReader fr = new FileReader("text.txt");
+        BufferedReader br = new BufferedReader(fr);
+        FileWriter fw = new FileWriter ("res_text.csv");
+        BufferedWriter bw = new BufferedWriter(fw);
+           
+    
+        while( f<4)
+            {
+            while( (line = br.readLine()) != null)
+                {
+                   unparsedfile+= line;
+                    
+                }
+            myarray = unparsedfile.split(",");
+            data = myarray;
+            
+            f++;
+            }
+        for(int i=0; i<myarray.length; i++)//start reading the contents and between end of contents
+            {
+                
+            line=myarray[i];
+            if(!line.equalsIgnoreCase("{"))   //ignore the begin: delimiter and start reading contents
+                {
+                   pos = line.indexOf(":");
+                   len = line.length();
+                   data[i] = line.substring(pos+1,len  );         // data contains all the data entries
+                   
+                }
+                   
+            }
+        for( int i=0; i<column.length; i++)                       // writing column name to CSV file
+            {
+                writestring = column[i] + ",";
+                bw.write(writestring);
+               // bw.write(writestring);
+                //System.out.println(column[i]);
+            }
+        
+            bw.write("\n");
+        for( int i=0; i<data.length; i++)                         // writing data entries to CSV file
+            {
+                writestring1 = data[i] + ",";
+               // bw.write(writestring);
+                bw.write(writestring1);
+                //System.out.println(column[i]);
+            }
+            bw.write("\n");
+            bw.close();  
+    }
+
+    
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        
+        Csvfile myapp = new Csvfile();
+        myapp.splitcolumn();                            // calls the split column method()
+        myapp.splitdata();                              // calls the split data method()
+    }
+
+    
+    
+}
