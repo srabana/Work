@@ -84,10 +84,13 @@ public class Csvfile {
             }
         for( int i=0; i<column.length; i++)                       // writing column name to CSV file
             {
+                if(i!=1)
+                {
                 writestring = column[i] + ",";
                 bw.write(writestring);
                // bw.write(writestring);
                 //System.out.println(column[i]);
+                }
             }
         
             bw.write("\n");
