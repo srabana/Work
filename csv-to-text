@@ -1,0 +1,181 @@
+package new_csv;
+import java.io.*;
+import java.nio.file.Files;
+import java.util.*;
+/**
+ *
+ * @author india
+ */
+public class New_CSV {
+String column[]=null;
+Character c;
+int pos;
+String temp="";
+
+    public void splitcolumn(String a) throws FileNotFoundException, IOException
+    {
+        int f=0, pos=0, times=1;
+        String line="", unparsedfile="";
+        String myarray[]=null;
+        try
+        {
+        FileReader fr = new FileReader(a);
+        BufferedReader br = new BufferedReader(fr);
+        FileWriter fw = new FileWriter ("res_text.csv");
+        BufferedWriter bw = new BufferedWriter(fw);
+        
+        
+    
+        while( f<4)
+            {
+            while( (line = br.readLine()) != null)
+                {
+                    temp=line;
+                    
+                  if(temp.contains("null."))
+                    {line=temp.replaceAll("null.", " null, ");
+                      
+                  //System.out.println(temp);
+                   unparsedfile+= line;
+                    } 
+                }
+           
+            myarray = unparsedfile.split(",");
+            column = myarray;
+            
+            f++;
+            }
+        for(int i=0; i<myarray.length; i++)//start reading the contents and between end of contents
+            {
+               
+            line=myarray[i];
+            
+            if(!line.equalsIgnoreCase("{"))   //ignore the begin: delimiter and start reading contents
+                {
+                   pos = line.indexOf(":");
+                   column[i] = line.substring(0,pos+1 );
+                   
+                }
+                   
+            }
+        }catch (IOException e)
+        { System.out.println("Cannot read from the specified file.");}
+    }
+    private void splitdata(String a) throws FileNotFoundException, IOException 
+    {
+      int f=0, pos=0,len=0, times=0, time=0;
+        String line="", unparsedfile="", writestring = "", writestring1="", temp="";
+        String myarray[]=null,data1[][] = null, data[]=null;
+        FileReader fr = new FileReader(a);
+        BufferedReader br = new BufferedReader(fr);
+        FileWriter fw = new FileWriter (a+"_csv.csv");
+        BufferedWriter bw = new BufferedWriter(fw);
+        
+                 
+    
+        while( f<4)
+            {
+               
+            while( (line = br.readLine()) != null)
+                {
+                    temp=line;
+                    
+                  if(temp.contains("null."))
+                    {line=temp.replaceAll("null.", " null, ");
+                     
+                    //System.out.println(line);} 
+                  unparsedfile+= line;
+                    } 
+                }
+            myarray = unparsedfile.split(",");    
+            data = myarray;
+            
+            f++;
+            }
+        for(int i=0; i<myarray.length; i++)//start reading the contents and between end of contents
+            {
+            for(int j=0; j<=4; j++)
+           {
+               
+            line=myarray[i];
+            
+            if(!line.equalsIgnoreCase("{"))   //ignore the begin: delimiter and start reading contents
+                {
+                   pos = line.indexOf(":");
+                   len = line.length();
+                   data[i] = line.substring(pos+1,len  );
+                   
+                }
+           }
+            }
+       try
+       {
+        for( int i=0; i<column.length; i++)
+            {
+               if(times<=4)
+                {
+                if(i!=1)
+                {
+                writestring = column[i] + ",";
+                bw.write(writestring);
+               // bw.write(writestring);
+                 }
+            } times++;
+        }
+            bw.write("\n");
+        for(int j=0; j<data.length/4;j++)  
+        {
+        for( int i=0; i<=4; i++)
+            {
+               writestring1 = data[i] + ",";
+               // bw.write(writestring);
+                bw.write(writestring1);
+                
+            } bw.write("\n");
+        }
+           bw.write("\n");
+            bw.close();  
+       } catch(IOException e)
+       { System.out.println("Cannot be written into the specified file.");}
+    }
+
+    
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        
+        String path;
+  Scanner inpt=new Scanner(System.in);
+        System.out.print("enter the path: "); // (like: C:\\user\\documents)
+        System.out.println("(hint: the path should use  double slash \\\\ )");
+	path=inpt.next();
+        String line;
+        File folder = new File(path);
+	File[] listoffiles = folder.listFiles();
+        Collection<String> files  =new ArrayList<String>();
+      
+        for(int i=0;i<listoffiles.length;++i)
+        {
+        	BufferedReader input=new BufferedReader (new FileReader(path+"\\"+listoffiles[i].getName()));
+        	while((line=input.readLine())!=null)
+        	{
+        	files.add(path+"\\"+listoffiles[i].getName());
+                        
+                  	}      
+        } 
+        String a[]= files.toArray(new String[]{});
+        New_CSV []myapp = new New_CSV[a.length];
+        New_CSV my = new New_CSV();
+       
+        for(int i=0; i<a.length; ++i)
+        {
+            myapp[i]= new New_CSV();  
+        }
+      	for(int i=0; i<a.length;++i)
+        {
+            
+            myapp[i].splitcolumn(a[i]);
+            myapp[i].splitdata(a[i]);      
+        }
+    }
+
+    
+}
